@@ -1,4 +1,5 @@
 node_modules
 .idea
+.babelrc
 *-compiled.js
 *-compiled.js.map
