@@ -1,15 +1,22 @@
 {
   "name": "jenkins-metrics",
   "version": "0.0.1",
-  "description": "Grabs data from Jenkins",
+  "description": "Pulls job details from Jenkins, and store them in a RethinkDB for further analysis.",
   "main": "lib/app.js",
   "directories": {
     "lib": "lib"
+  },
+  "scripts": {
+    "test": "mocha  -R spec test/**/*-test.js"
   },
   "keywords": [
     "jenkins",
     "metrics"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TOPdesk/jenkins-metrics-collector"
+  },
   "license": "MIT",
   "dependencies": {
     "bluebird": "^3.3.5",
@@ -18,5 +25,12 @@
     "daemon": "^1.1.0",
     "request-promise": "^3.0.0",
     "rethinkdb": "^2.3.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "mock-require": "^1.2.1",
+    "should": "^8.3.1",
+    "sinon": "^1.17.4"
   }
 }
