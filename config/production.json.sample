@@ -1,0 +1,20 @@
+{
+  "jenkins": {
+    "url": "http://your-jenkins-url",
+    "filters": {
+      "filter1": "",
+      "filter2": "[custom,action,field,names]"
+    },
+    "jobs": {
+      "Job1_Name": "filter1",
+      "Job2_Name": "filter1",
+      "Job3_Name": "filter2"
+    }
+  },
+  "database": {
+    "host": "rethink-db-host",
+    "port": 28015,
+    "authKey": "rethink-db-auth-key-or-empty-string",
+    "name": "database-name"
+  }
+}
