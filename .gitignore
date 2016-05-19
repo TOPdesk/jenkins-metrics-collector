@@ -3,3 +3,4 @@ node_modules
 .babelrc
 *-compiled.js
 *-compiled.js.map
+config/local*
