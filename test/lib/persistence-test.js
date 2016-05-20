@@ -1,20 +1,23 @@
-const chai = require('chai')
+const chai = require('chai');
+const chaiAsPromised = require('chai-as-promised');
 chai.should();
-chai.use(require('chai-as-promised'));
+chai.use(chaiAsPromised);
+
 require('sinon-bluebird');
 const using = require('bluebird').Promise.using;
-const rethink = require('./mock-rethink');
 const sinon = require('sinon');
 
 const config = require('config');
 sinon.stub(config, 'get').withArgs('database.name').returns('test_database');
 
+const rethink = require('./mock-rethink');
 const persistence = require('../../lib/persistence');
+
+after(() => config.get.restore());
 
 describe('connection', () => {
   beforeEach(() => rethink.prepare());
   afterEach(() => rethink.restore());
-  after(() => config.get.restore());
 
   it('should be closed after use', () => {
     const close = rethink.mock.connection.close()
@@ -100,10 +103,21 @@ describe('connection', () => {
       conn.should.equal(rethink.test.connection());
     }).finally(() => indexWait.verify());
   });
-
 });
 
 describe('insert', () => {
-  // pending
+  beforeEach(() => rethink.prepare());
+  afterEach(() => rethink.restore());
+
+  it('should call insert with document', () => {
+    const data = { key: 'value' };
+    const insert = rethink.mock.table.insert()
+      .once()
+      .withExactArgs(data);
+    return using(persistence.connection(), (conn) => {
+      conn.should.equal(rethink.test.connection());
+      persistence.insert(conn, data);
+    }).finally(() => insert.verify());
+  });
 });
 

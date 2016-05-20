@@ -32,7 +32,8 @@ function createTableStub() {
   return {
     indexWait: () => createRunnable(),
     indexCreate: () => createRunnable(),
-    indexList: () => createRunnable([])
+    indexList: () => createRunnable([]),
+    insert: () => createRunnable()
   };
 }
 
@@ -66,6 +67,15 @@ module.exports = {
         sinon.stub(rethink, 'db').returns(database);
         return table
           .expects('indexWait')
+          .returns(createRunnable());
+      },
+      insert: () => {
+        const table = sinon.mock(createTableStub());
+        const database = Object.assign(createDatabaseStub(), { table: () => table.object });
+        rethink.db.restore();
+        sinon.stub(rethink, 'db').returns(database);
+        return table
+          .expects('insert')
           .returns(createRunnable());
       }
     },
