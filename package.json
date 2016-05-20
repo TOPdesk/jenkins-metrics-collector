@@ -7,7 +7,7 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "mocha  -R spec test/**/*-test.js"
+    "test": "mocha --async-only --reporter spec test/**/*-test.js"
   },
   "keywords": [
     "jenkins",
@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
     "mocha": "^2.4.5",
     "should": "^8.3.1",
     "sinon": "^1.17.4",

@@ -1,8 +1,13 @@
 const rethink = require('rethinkdb');
 const sinon = require('sinon');
 
+
+const connectionStub = {
+  close: sinon.stub()
+};
+
 function prepare() {
-  sinon.stub(rethink, 'connect').resolves(createConnectionStub());
+  sinon.stub(rethink, 'connect').resolves(connectionStub);
   sinon.stub(rethink, 'db').returns(createDatabaseStub());
   sinon.stub(rethink, 'dbList').returns(createRunnable([]));
   sinon.stub(rethink, 'dbCreate').returns(createRunnable());
@@ -13,12 +18,6 @@ function restore() {
   rethink.db.restore();
   rethink.dbList.restore();
   rethink.dbCreate.restore();
-}
-
-function createConnectionStub() {
-  return {
-    close: sinon.stub()
-  };
 }
 
 function createDatabaseStub() {
@@ -46,6 +45,9 @@ function createRunnable(result) {
 module.exports = {
   prepare,
   restore,
+  test: {
+    connection: () => connectionStub
+  },
   mock: {
     table: {
       indexCreate: () => {
@@ -55,6 +57,15 @@ module.exports = {
         sinon.stub(rethink, 'db').returns(database);
         return table
           .expects('indexCreate')
+          .returns(createRunnable());
+      },
+      indexWait: () => {
+        const table = sinon.mock(createTableStub());
+        const database = Object.assign(createDatabaseStub(), { table: () => table.object });
+        rethink.db.restore();
+        sinon.stub(rethink, 'db').returns(database);
+        return table
+          .expects('indexWait')
           .returns(createRunnable());
       }
     },
@@ -70,6 +81,19 @@ module.exports = {
         sinon.stub(rethink, 'db').returns(database);
         return table
           .expects('indexCreate')
+          .returns(createRunnable());
+      },
+      indexWait: () => {
+        const table = sinon.mock(Object.assign(createTableStub(),
+          { indexList: () => createRunnable(['jobName']) }));
+        const database = Object.assign(createDatabaseStub(), {
+          table: () => table.object,
+          tableList: () => createRunnable(['jenkins_metrics'])
+        });
+        rethink.db.restore();
+        sinon.stub(rethink, 'db').returns(database);
+        return table
+          .expects('indexWait')
           .returns(createRunnable());
       }
     },
