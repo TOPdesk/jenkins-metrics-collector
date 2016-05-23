@@ -1,5 +1,5 @@
 {
-  "name": "jenkins-metrics",
+  "name": "jenkins-metrics-collector",
   "version": "0.0.1",
   "description": "Pulls job details from Jenkins, and store them in a RethinkDB for further analysis.",
   "main": "lib/app.js",
