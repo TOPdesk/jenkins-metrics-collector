@@ -6,6 +6,9 @@
   "directories": {
     "lib": "lib"
   },
+  "bin": {
+    "jemeco": "bin/jemeco.js"
+  },
   "scripts": {
     "test": "mocha --async-only --reporter spec test/**/*-test.js"
   },
