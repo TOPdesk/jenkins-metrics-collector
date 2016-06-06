@@ -8,7 +8,11 @@
     "views": {
         "View1_Name": "filter1",
         "View2_Name": "filter2"
-    }
+    },
+    "excludes": [
+        "Job_Name_To_Exclude_From_Views",
+        "Other_Job_Name_To_Exclude_From_Views"
+    ]
     "jobs": {
       "Job1_Name": "filter1",
       "Job2_Name": "filter1",
